@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from roll.views import signup, signout, signin
 from main.views import index, base, contacto, nosotros, servicios
+from agenda.views import CitaCreateView, CitaListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,6 @@ urlpatterns = [
     path('contacto/', contacto, name="contacto"),
     path('logout/', signout, name="logout"),
     path('signin/', signin, name="signin"),
+    path('agendar_hora/', CitaCreateView.as_view(), name="agendar"),
+    path('lista_citas/', CitaListView.as_view(), name="lista_citas")
 ]

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Region(models.Model):
     codigo = models.CharField(max_length=10, blank=True)
+    tipo = models.CharField(max_length=100, blank=True)
     nombre = models.CharField(max_length=100, blank=True)
     lat = models.FloatField(null=True)
     lng = models.FloatField(null=True)
@@ -16,6 +17,7 @@ class Region(models.Model):
 
 class Provincia(models.Model):
     codigo = models.CharField(max_length=10, blank=True)
+    tipo = models.CharField(max_length=100, blank=True)
     nombre = models.CharField(max_length=100, blank=True)
     lat = models.FloatField(null=True)
     lng = models.FloatField(null=True)
@@ -28,6 +30,7 @@ class Provincia(models.Model):
 
 class Comuna(models.Model):
     codigo = models.CharField(max_length=10, blank=True)
+    tipo = models.CharField(max_length=100, blank=True)
     nombre = models.CharField(max_length=100, blank=True)
     lat = models.FloatField(null=True)
     lng = models.FloatField(null=True)
@@ -39,19 +42,18 @@ class Comuna(models.Model):
         return self.nombre
 
 class EstadoCivil(models.Model):
-    descripcion_estado_civil = models.CharField(max_length=50, unique=True)
+    tipo_estado_civil = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
-        return self.descripcion_estado_civil
+        return self.tipo_estado_civil
 
 class Cliente(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-    numrut_cliente = models.CharField(max_length=11, primary_key=True)
-    dvrut_cliente = models.CharField(max_length=2)
-    telefono_cliente = models.CharField(max_length=15)
-    direccion_cliente = models.CharField(max_length=50)
-    comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
-    estado_civil = models.ForeignKey(EstadoCivil, on_delete=models.CASCADE)
+    numrut_cliente = models.CharField(max_length=12, primary_key=True, blank=True)
+    telefono_cliente = models.CharField(max_length=15, null=True, blank=True)
+    direccion_cliente = models.CharField(max_length=50, null=True, blank=True)
+    comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE, null=True, blank=True)
+    estado_civil = models.ForeignKey(EstadoCivil, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.numrut_cliente
@@ -62,7 +64,7 @@ class Sucursal(models.Model):
     comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nombre_clinica
+        return f"{self.nombre_clinica} {self.direccion_clinica}"
 
 
 class Especialidad(models.Model):
@@ -72,26 +74,27 @@ class Especialidad(models.Model):
         return self.nombre_especialidad
 
 class Veterinario(models.Model):
-    numrut_veterinario = models.CharField(max_length=11, primary_key=True)
-    dvrut_veterinario = models.CharField(max_length=2)
+    numrut_veterinario = models.CharField(max_length=12, primary_key=True)
     nombre_veterinario = models.CharField(max_length=50)
     apellido_veterinario = models.CharField(max_length=50)
+    correo_veterinario = models.CharField(max_length=50, null=True, blank=True)
     direccion_veterinario = models.CharField(max_length=50)
     telefono_veterinario = models.CharField(max_length=15)
     comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
     estado_civil = models.ForeignKey(EstadoCivil, on_delete=models.CASCADE)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE)    
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.nombre_veterinario} {self.apellido_veterinario}"
  
 
 class Recepcionista(models.Model):
-    numrut_recepcionista = models.CharField(max_length=11, primary_key=True)
-    dvrut_recepcionista = models.CharField(max_length=2)
+    numrut_recepcionista = models.CharField(max_length=12, primary_key=True)
     nombre_recepcionista = models.CharField(max_length=50)
     apellido_recepcionista = models.CharField(max_length=50)
+    correo_recepcionista = models.CharField(max_length=50, null=True, blank=True)
     direccion_recepcionista = models.CharField(max_length=50)
     telefono_recepcionista = models.CharField(max_length=15)
     comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
@@ -102,10 +105,18 @@ class Recepcionista(models.Model):
         return f"{self.nombre_recepcionista} {self.apellido_recepcionista}"
 
 class RazaPaciente(models.Model):
-    raza_paciente = models.CharField(max_length=50, unique=True)
+    RAZA_CHOICES = [
+        ('perro', 'Perro'),
+        ('gato', 'Gato'),
+        ('ave', 'Ave')
+    ]
+    raza_paciente = models.CharField(max_length=10, choices=RAZA_CHOICES)
+    raza_perro = models.CharField(max_length=50, null=True, blank=True)
+    raza_gato = models.CharField(max_length=50, null=True, blank=True)
+    raza_ave = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return self.raza_paciente
+        return f"{self.raza_paciente}: {self.raza_perro or self.raza_gato or self.raza_ave}"
 
 class TipoPaciente(models.Model):
     tipo_paciente = models.CharField(max_length=50)

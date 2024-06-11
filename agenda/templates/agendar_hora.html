@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block contenido %}
+{% load static %}
+<title>Agenda tu hora</title>
+<body>
+    <h1>Agenda tu hora</h1>
+    <form class="form-horizontal" method="post" action="{% url 'agendar' %}">
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+        {% endfor %}
+        <fieldset>
+            <div class="form-group{% if form.veterinario.errors %} has-error{% endif %}">
+              <label for="{{ form.veterinario.auto_id }}" class="col-md-3 control-label">
+              {{ form.veterinario.label }}</label>
+              <div class="col-md-9">
+                {% render_field form.veterinario class="form-control" %}
+
+                {% for error in form.veterinario.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="form-group{% if form.sucursal.errors %} has-error{% endif %}">
+                <label for="{{ form.sucursal.auto_id }}" class="col-md-3 control-label">
+                    {{ form.sucursal.label }}
+                </label>
+                <div class="col-md-9">
+                    {% render_field form.sucursal class="form-control" %}
+            
+                    {% for error in form.sucursal.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group{% if form.fecha_cita.errors %} has-error{% endif %}">
+              <label for="{{ form.fecha_cita.auto_id }}" class="col-md-3 control-label">
+              {{ form.fecha_cita.label }}</label>
+              <div class="col-md-9">
+                {% render_field form.fecha_cita type="date" class="form-control" placeholder="01/01/2022" %}
+                {% for error in form.fecha_cita.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="form-group{% if form.horario.errors %} has-error{% endif %}">
+              <label for="{{ form.horario.auto_id }}" class="col-md-3 control-label">
+              {{ form.horario.label }}</label>
+              <div class="col-md-9">
+                {% render_field form.horario class="form-control" %}
+
+                {% for error in form.horario.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-9 col-md-offset-3">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </div>
+            </div>
+        </fieldset>
+    </form>
+</body>
+{% endblock %}
+

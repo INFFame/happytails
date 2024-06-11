@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block contenido %}
+{% load static %}
+<h2>Citas disponibles</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Medico
+            </th>
+            <th>
+                Dia
+            </th>
+            <th>
+                Horario
+            </th>
+            <th>
+                Opções
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cita in object_list %}
+        <tr>
+            <td>
+                <a href=""># {{ cita.pk }}</a>
+            </td>
+            <td>
+                {{ cita.veterinario }}
+            </td>
+            <td>
+                {{ cita.dia|date:"d/m/Y" }}
+            </td>
+            <td>
+                {{ cita.get_horario_display }}
+            </td>
+            <td>
+                <a href="{% url 'lista_citas' cita.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
