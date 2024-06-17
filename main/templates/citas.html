@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block contenido %}
+{% load static %}
+<body>
+    <h2>Citas</h2>
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>
+                    Nombre Usuario
+                </th>
+                <th>
+                    Veterinario
+                </th>
+                <th>
+                    Fecha cita
+                </th>
+                <th>
+                    Horario cita
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td class = "text-capitalize">
+                    {{ cita.usuario.first_name }} {{ cita.usuario.last_name }}
+                </td>
+                <td>
+                    {{ cita.veterinario }}
+                </td>
+                <td>
+                    {{ cita.fecha_cita|date:"d/m/Y" }}
+                </td>
+                <td>
+                    {{ cita.get_horario_display }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}                                                                                                                                        
