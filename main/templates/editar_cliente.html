@@ -20,11 +20,11 @@
                     <div class="modal-body p-5 pt-0">
                         <form method="post">
                             {% csrf_token %}
-                            {% comment %} <div class="form-floating mb-4">
+                            {% comment %}<div class="form-floating mb-4">
                                 <input type="text" name="numrut_cliente" class="form-control rounded-4" id="numrut_cliente"
                                     placeholder="Número de RUT Cliente" value="{{ form.numrut_cliente.value }}" readonly>
-                                <label for="numrut_cliente">Número de RUT Cliente</label>
-                            </div> {% endcomment %}
+                                <label for="numrut_cliente">RUT</label>
+                            </div> {% endcomment %} 
                             <div class="form-floating mb-4">                                
                                 <input type="text" name="telefono_cliente" class="form-control rounded-4" id="telefono_cliente"
                                     placeholder="Teléfono" value="{{ form.telefono_cliente.value }}">
