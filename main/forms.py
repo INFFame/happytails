@@ -1,11 +1,5 @@
-# forms.py
 from django import forms
-from .models import Cliente
-
-class ReadOnlyTextInput(forms.TextInput):
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('attrs', {}).update({'readonly': 'readonly'})
-        super().__init__(*args, **kwargs)
+from .models import Cliente, Comuna, EstadoCivil  
 
 class ClienteForm(forms.ModelForm):
     class Meta:
@@ -18,8 +12,11 @@ class ClienteForm(forms.ModelForm):
             'comuna': 'Comuna',
             'estado_civil': 'Estado Civil',
         }
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+
+    def init(self, args, **kwargs):
+        super().init(args, **kwargs)
         # Hacer el campo numrut_cliente de solo lectura
-        self.fields['numrut_cliente'].widget = ReadOnlyTextInput()
+        self.fields['numrut_cliente'].widget.attrs['readonly'] = True
+        # Asegúrate de que los campos de ForeignKey usen Select widgets para mostrar nombres
+        self.fields['comuna'].queryset = Comuna.objects.all()
+        self.fields['estado_civil'].queryset = EstadoCivil.objects.all()

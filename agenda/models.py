@@ -37,8 +37,10 @@ class Cita(models.Model):
     )
     horario = models.CharField(max_length=10, choices=HORARIOS, default="1")
 
-    class meta:
-        unique_together = ('horario', 'fecha_cita', 'veterinario', 'sucursal')
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['horario', 'fecha_cita', 'veterinario', 'sucursal'], name='unique_cita')
+        ]
 
     def __str__(self):
         return f'{self.fecha_cita.strftime("%Y-%m-%d")} - {self.get_horario_display()} - {self.veterinario}'

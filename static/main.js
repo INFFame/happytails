@@ -63,3 +63,68 @@ function actualizarHorarios() {
         .catch(error => console.error(error));
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var popoverTrigger = document.getElementById('avatar-button');
+    var popover = new bootstrap.Popover(popoverTrigger, {
+        content: document.getElementById('popover-content').innerHTML,
+        html: true,
+        placement: 'bottom',
+        trigger: 'click'
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!popoverTrigger.contains(e.target) && !document.querySelector('.popover')?.contains(e.target)) {
+            popover.hide();
+        }
+    });
+});
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('submit-btn').addEventListener('click', function(event) {
+        event.preventDefault(); // Evita el envío predeterminado del formulario
+        
+        // Realiza validaciones adicionales si es necesario
+        if (formIsValid()) {
+            // Muestra un mensaje de éxito con SweetAlert2
+            Swal.fire({
+                icon: 'success',
+                title: '¡La hora ha sido tomada correctamente!',
+                showConfirmButton: true,
+                // timer: 20000 // Tiempo en milisegundos (1.5 segundos)
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Envía el formulario si el usuario hace clic en "OK"
+                    document.getElementById('agenda-form').submit();
+                    window.location.href = '/';
+                }
+            });
+        }
+    });
+
+    // Función para validar el formulario
+    function formIsValid() {
+        // Aquí puedes realizar validaciones adicionales si es necesario
+        // Por ejemplo, validar que la fecha de la cita no sea anterior a hoy
+        var fechaCitaInput = document.getElementById('id_fecha_cita');
+        var fechaCita = new Date(fechaCitaInput.value);
+        var hoy = new Date();
+        
+        if (fechaCita < hoy) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La fecha de la cita no puede ser anterior a la fecha actual.',
+            });
+            return false;
+        }
+
+        // Aquí puedes agregar más validaciones según tus requerimientos
+
+        return true; // Retorna true si todas las validaciones pasan
+    }
+});

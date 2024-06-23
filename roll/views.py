@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import logout as django_logout
 
+
 # Create your views here.
 
 def signup(request):
@@ -96,18 +97,11 @@ def signout(request):
 
 def signin(request):
     if request.method == 'GET':
-        return render(request, 'signin.html', {
-            'form': AuthenticationForm
-        })
+        return render(request, 'signin.html', {'form': AuthenticationForm})
     else:
-        user = authenticate(
-            request, username=request.POST['username'], password=request.POST['password'])
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            return render(request, 'signin.html', {
-            'form': AuthenticationForm,
-            'error': 'Usuario o contraseña es incorrecta'
-            })
+            return render(request, 'signin.html', {'form': AuthenticationForm, 'error': 'Usuario o contraseña es incorrecta'})
         else:
             login(request, user)
             return redirect('index')
-

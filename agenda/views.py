@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.db import IntegrityError, transaction
+from roll.models import TipoUsuario
 
 
 class TestMixinIsAdmin(UserPassesTestMixin):
@@ -27,12 +29,28 @@ class CitaCreateView(ClienteCreateMixin, CreateView):
     model = Cita
     template_name = 'agendar_hora.html'
     fields = ['veterinario', 'fecha_cita', 'sucursal', 'horario']
-    success_url = reverse_lazy('lista_citas')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
-        # Asignar el usuario actual al campo 'usuario' del formulario antes de guardarlo
         form.instance.usuario = self.request.user
-        return super().form_valid(form)
+        try:
+            with transaction.atomic():
+                response = super().form_valid(form)
+                return response
+        except IntegrityError:
+            form.add_error(None, "Ya existe una cita para este veterinario en esta fecha y horario.")
+            return self.form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tipo_usuario = None
+        if self.request.user.is_authenticated:
+            try:
+                tipo_usuario = TipoUsuario.objects.get(usuario=self.request.user)
+            except TipoUsuario.DoesNotExist:
+                pass
+        context['tipo_usuario'] = tipo_usuario.tipo if tipo_usuario else None
+        return context    
 
 class CitaListView(ClienteCreateMixin, TestMixinIsAdmin, ListView):
     template_name = 'lista_citas.html'
@@ -40,14 +58,48 @@ class CitaListView(ClienteCreateMixin, TestMixinIsAdmin, ListView):
     def get_queryset(self):
         return Cita.objects.all().order_by('-pk')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tipo_usuario = None
+        if self.request.user.is_authenticated:
+            try:
+                tipo_usuario = TipoUsuario.objects.get(usuario=self.request.user)
+            except TipoUsuario.DoesNotExist:
+                pass
+        context['tipo_usuario'] = tipo_usuario.tipo if tipo_usuario else None
+        return context  
+    
+
 class CitaDeleteView(TestMixinIsAdmin, ClienteCreateMixin, DeleteView):
     model = Cita
-    success_url = reverse_lazy('cita_list')
-    template_name = 'form_delete.html'
+    success_url = reverse_lazy('lista_citas')
+    template_name = 'eliminar_cita.html'
 
     def get_success_url(self):
         messages.success(self.request, "Cita cancelada con éxito!")
-        return reverse_lazy('cita_list')    
+        return reverse_lazy('lista_citas')
+
+    def delete(self, request, *args, **kwargs):
+        print("Entrando al método delete de CitaDeleteView")
+        self.object = self.get_object()
+        print(f"Cita a eliminar: {self.object}")
+        success_url = self.get_success_url()
+        print(f"URL de éxito: {success_url}")
+        self.object.delete()
+        print("Cita eliminada exitosamente")
+        return redirect(success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tipo_usuario = None
+        if self.request.user.is_authenticated:
+            try:
+                tipo_usuario = TipoUsuario.objects.get(usuario=self.request.user)
+            except TipoUsuario.DoesNotExist:
+                pass
+        context['tipo_usuario'] = tipo_usuario.tipo if tipo_usuario else None
+        return context  
+
 
 cita_create = CitaCreateView.as_view()    
 cita_list = CitaListView.as_view()

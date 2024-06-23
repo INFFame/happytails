@@ -15,10 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from roll.views import signup, signout, signin
 from main.views import index, base, contacto, nosotros, servicios, editar_cliente, citas
-from agenda.views import CitaCreateView, CitaListView
+from agenda.views import CitaCreateView, CitaListView, CitaDeleteView
 
 
 urlpatterns = [
@@ -33,6 +33,9 @@ urlpatterns = [
     path('signin/', signin, name="signin"),
     path('agendar_hora/', CitaCreateView.as_view(), name="agendar"),
     path('lista_citas/', CitaListView.as_view(), name="lista_citas"),
+    path('eliminar_cita/<int:pk>/', CitaDeleteView.as_view(), name='eliminar_cita'),
+
+
     path('editar_cliente/', editar_cliente, name='editar_cliente'),
     path('citas/', citas, name='citas'),
 ]

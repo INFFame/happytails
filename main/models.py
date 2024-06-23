@@ -48,12 +48,12 @@ class EstadoCivil(models.Model):
         return self.tipo_estado_civil
 
 class Cliente(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     numrut_cliente = models.CharField(max_length=12, primary_key=True, blank=True)
     telefono_cliente = models.CharField(max_length=15, null=True, blank=True)
     direccion_cliente = models.CharField(max_length=50, null=True, blank=True)
     comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE, null=True, blank=True)
     estado_civil = models.ForeignKey(EstadoCivil, on_delete=models.CASCADE, null=True, blank=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.numrut_cliente
