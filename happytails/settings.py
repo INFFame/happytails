@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'roll',
     'main',
     'agenda',
+    'pacientes',
     'widget_tweaks',
 ]
 

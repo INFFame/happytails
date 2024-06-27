@@ -51,6 +51,3 @@ class TipoPacienteAdmin(admin.ModelAdmin):
 class TratamientoAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Paciente)
-class PacienteAdmin(admin.ModelAdmin):
-    pass
