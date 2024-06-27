@@ -131,3 +131,10 @@ class Tratamiento(models.Model):
     def __str__(self):
         return self.tipo_tratamiento
     
+def get_cliente(self):
+    try:
+        return Cliente.objects.get(usuario=self)
+    except Cliente.DoesNotExist:
+        return None
+
+User.add_to_class('cliente', property(get_cliente))

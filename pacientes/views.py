@@ -1,7 +1,7 @@
 # pacientes/views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Paciente
 from .forms import PacienteForm
+from .models import Paciente
 
 def crear_editar_paciente(request, id=None):
     if id:
@@ -9,13 +9,13 @@ def crear_editar_paciente(request, id=None):
     else:
         paciente = Paciente()
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PacienteForm(request.POST, instance=paciente)
         if form.is_valid():
             paciente = form.save(commit=False)
-            paciente.cliente = request.user.cliente  # Asumiendo que tienes una relación con el cliente logueado
+            paciente.cliente = request.user.cliente  # Asocia el cliente al paciente
             paciente.save()
-            return redirect('index')
+            return redirect('index')  # Ajusta esto según tu URL de redirección
     else:
         form = PacienteForm(instance=paciente)
 
