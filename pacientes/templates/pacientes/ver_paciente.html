@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="container">
+    <h2>Seleccionar Paciente</h2>
+    <div class="mb-3">
+        <a href="{% url 'crear_paciente' %}" class="btn btn-primary">Crear Paciente</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in pacientes %}
+                <tr>
+                    <td>{{ paciente.nombre_paciente }}</td>
+                    <td>
+                        <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-secondary">Editar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="2">No tienes pacientes registrados.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
