@@ -20,3 +20,13 @@ def crear_editar_paciente(request, id=None):
         form = PacienteForm(instance=paciente)
 
     return render(request, 'pacientes/crear_editar_paciente.html', {'form': form})
+
+def ver_paciente(request):
+    cliente = request.user.cliente  # Asegúrate de que el cliente esté asociado al usuario
+    pacientes = Paciente.objects.filter(cliente=cliente)
+
+    context = {
+        'pacientes': pacientes,
+    }
+
+    return render(request, 'pacientes/ver_paciente.html', context)

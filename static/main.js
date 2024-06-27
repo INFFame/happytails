@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (result.isConfirmed) {
                     // Envía el formulario si el usuario hace clic en "OK"
                     document.getElementById('agenda-form').submit();
-                    window.location.href = '/';
+                    // window.location.href = '/';
                 }
             });
         }
