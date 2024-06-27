@@ -2,14 +2,14 @@
 
 {% block contenido %}
 <div class="container">
-    <h2>Seleccionar Paciente</h2>
+    <h2>Mis Mascotas</h2>
     <div class="mb-3">
-        <a href="{% url 'crear_paciente' %}" class="btn btn-primary">Crear Paciente</a>
+        <a href="{% url 'crear_paciente' %}" class="btn btn-primary">Crear Mascota</a>
     </div>
     <table class="table">
         <thead>
             <tr>
-                <th>Nombre</th>
+                <th>Nombre Mascota</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -19,6 +19,10 @@
                     <td>{{ paciente.nombre_paciente }}</td>
                     <td>
                         <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-secondary">Editar</a>
+                        <form method="post" action="{% url 'eliminar_paciente' paciente.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
             {% empty %}

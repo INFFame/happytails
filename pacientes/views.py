@@ -1,5 +1,7 @@
 # pacientes/views.py
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .forms import PacienteForm
 from .models import Paciente
 
@@ -15,7 +17,7 @@ def crear_editar_paciente(request, id=None):
             paciente = form.save(commit=False)
             paciente.cliente = request.user.cliente  # Asocia el cliente al paciente
             paciente.save()
-            return redirect('index')  # Ajusta esto según tu URL de redirección
+            return redirect('ver_paciente')  # Ajusta esto según tu URL de redirección
     else:
         form = PacienteForm(instance=paciente)
 
@@ -30,3 +32,12 @@ def ver_paciente(request):
     }
 
     return render(request, 'pacientes/ver_paciente.html', context)
+
+@login_required
+def eliminar_paciente(request, paciente_id):
+    paciente = get_object_or_404(Paciente, id=paciente_id, cliente=request.user.cliente)
+    if request.method == 'POST':
+        paciente.delete()
+        messages.success(request, 'Paciente eliminado con éxito.')
+        return redirect('ver_paciente')
+    return render(request, 'confirmar_eliminar.html', {'paciente': paciente})
