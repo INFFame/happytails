@@ -4,7 +4,7 @@ from .models import Paciente
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ['nombre_paciente', 'sexo_paciente', 'fecha_nacimiento_paciente', 'color_paciente', 'observacion_paciente', 'tipo_paciente', 'tipo_tratamiento']
+        fields = ['nombre_paciente', 'sexo_paciente', 'fecha_nacimiento_paciente', 'color_paciente', 'observacion_paciente', 'tipo_paciente']
         labels = {
             'nombre_paciente': 'Nombre del Paciente',
             'sexo_paciente': 'Sexo',
@@ -12,5 +12,4 @@ class PacienteForm(forms.ModelForm):
             'color_paciente': 'Color',
             'observacion_paciente': 'Observaciones',
             'tipo_paciente': 'Tipo de Paciente',
-            'tipo_tratamiento': 'Tipo de Tratamiento',
         }
