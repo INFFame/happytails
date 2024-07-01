@@ -7,40 +7,23 @@ from main.models import TipoPaciente
 from roll.models import TipoUsuario
 
 @login_required
-def crear_editar_paciente(request, id=None):
-    paciente = None
-    if id:
-        paciente = get_object_or_404(Paciente, id=id)
+def crear_editar_paciente(request, paciente_id=None):
+    if paciente_id:
+        paciente = get_object_or_404(Paciente, id=paciente_id)
+    else:
+        paciente = None
 
-    if request.method == "POST":
+    if request.method == 'POST':
         form = PacienteForm(request.POST, instance=paciente)
         if form.is_valid():
             paciente = form.save(commit=False)
-            paciente.cliente = request.user.cliente
-            tipo_paciente_id = request.POST.get('tipo_paciente')
-            tipo_paciente = get_object_or_404(TipoPaciente, id=tipo_paciente_id)
-            paciente.tipo_paciente = tipo_paciente
-
+            paciente.cliente = request.user.cliente  # Asocia el paciente al cliente actual
             paciente.save()
-            messages.success(request, 'Paciente guardado correctamente.')
-            return redirect('ver_paciente')
-        else:
-            print("Formulario inválido:", form.errors)
+            return redirect('ver_paciente')  # Redirige a la lista de pacientes después de guardar
     else:
         form = PacienteForm(instance=paciente)
 
-    # Retrieve TipoUsuario associated with the user
-    try:
-        tipo_usuario = TipoUsuario.objects.get(usuario=request.user)
-    except TipoUsuario.DoesNotExist:
-        tipo_usuario = None
-
-    context = {
-        'form': form,
-        'tipo_usuario': tipo_usuario.tipo if tipo_usuario else None,
-    }
-
-    return render(request, 'pacientes/crear_editar_paciente.html', context)
+    return render(request, 'pacientes/crear_editar_paciente.html', {'form': form, 'paciente': paciente})
 
 
 @login_required
@@ -64,9 +47,10 @@ def ver_paciente(request):
 
 @login_required
 def eliminar_paciente(request, paciente_id):
-    paciente = get_object_or_404(Paciente, id=paciente_id, cliente=request.user.cliente)
+    paciente = get_object_or_404(Paciente, id=paciente_id)
     if request.method == 'POST':
         paciente.delete()
-        messages.success(request, 'Paciente eliminado con éxito.')
         return redirect('ver_paciente')
-    return render(request, 'confirmar_eliminar.html', {'paciente': paciente})
+    return render(request, 'pacientes/confirmar_eliminar_paciente.html', {'paciente': paciente})
+
+

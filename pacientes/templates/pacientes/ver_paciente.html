@@ -44,10 +44,7 @@
                             <td class="text-capitalize">{{ paciente.tipo_tratamiento }}</td>
                             <td>
                                 <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-secondary mx-1">Editar</a>
-                                <form method="post" action="{% url 'eliminar_paciente' paciente.id %}" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger mx-1" onclick="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">Eliminar</button>
-                                </form>
+                                <a href="{% url 'eliminar_paciente' paciente.id %}" class="btn btn-danger mx-1">Eliminar</a>
                             </td>
                         </tr>
                         {% empty %}
