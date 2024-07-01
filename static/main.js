@@ -65,19 +65,28 @@ function actualizarHorarios() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var popoverTrigger = document.getElementById('avatar-button');
-    var popover = new bootstrap.Popover(popoverTrigger, {
-        content: document.getElementById('popover-content').innerHTML,
-        html: true,
-        placement: 'bottom',
-        trigger: 'click'
-    });
+    const popoverTrigger = document.getElementById('avatar-button');
 
-    document.addEventListener('click', function (e) {
-        if (!popoverTrigger.contains(e.target) && !document.querySelector('.popover')?.contains(e.target)) {
-            popover.hide();
-        }
-    });
+    if (popoverTrigger) {
+        new bootstrap.Popover(popoverTrigger, {
+            content: document.getElementById('popover-content').innerHTML,
+            html: true,
+            placement: 'bottom',
+            trigger: 'click'
+        });
+
+        // Agrega un listener para cerrar el popover cuando se haga clic fuera de él
+        document.addEventListener('click', function (e) {
+            const popover = document.querySelector('.popover');
+            if (!popoverTrigger.contains(e.target) && popover && !popover.contains(e.target)) {
+                popoverTrigger.click(); // Cerrar el popover haciendo clic en el trigger
+            }
+        });
+    } else {
+        console.error('Elemento con ID avatar-button no encontrado para inicializar el popover.');
+    }
+
+    // Resto de tu código JavaScript aquí
 });
 
 
@@ -85,31 +94,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('submit-btn').addEventListener('click', function(event) {
-        event.preventDefault(); // Evita el envío predeterminado del formulario
-        
-        // Realiza validaciones adicionales si es necesario
-        if (formIsValid()) {
-            // Muestra un mensaje de éxito con SweetAlert2
-            Swal.fire({
-                icon: 'success',
-                title: '¡La hora ha sido tomada correctamente!',
-                showConfirmButton: true,
-                // timer: 20000 // Tiempo en milisegundos (1.5 segundos)
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Envía el formulario si el usuario hace clic en "OK"
-                    document.getElementById('agenda-form').submit();
-                    
-                }
-            });
-        }
-    });
+    // Agregar el event listener al botón de submit
+    const submitBtn = document.getElementById('submit-btn');
+    if (submitBtn) {
+        submitBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Evita el envío predeterminado del formulario
+
+            // Realiza validaciones adicionales si es necesario
+            if (formIsValid()) {
+                // Muestra un mensaje de éxito con SweetAlert2
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡La hora ha sido tomada correctamente!',
+                    showConfirmButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Envía el formulario si el usuario hace clic en "OK"
+                        document.getElementById('agenda-form').submit();
+                    }
+                });
+            }
+        });
+    } else {
+        console.error('Elemento con ID submit-btn no encontrado.');
+    }
 
     // Función para validar el formulario
     function formIsValid() {
-        // Aquí puedes realizar validaciones adicionales si es necesario
-        // Por ejemplo, validar que la fecha de la cita no sea anterior a hoy
+        // Aquí puedes realizar tus validaciones según sea necesario
+        // Ejemplo de validación de fecha
         var fechaCitaInput = document.getElementById('id_fecha_cita');
         var fechaCita = new Date(fechaCitaInput.value);
         var hoy = new Date();
@@ -123,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        // Aquí puedes agregar más validaciones según tus requerimientos
+        // Puedes agregar más validaciones aquí según tus necesidades
 
         return true; // Retorna true si todas las validaciones pasan
     }

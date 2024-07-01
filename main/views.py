@@ -1,9 +1,10 @@
 from roll.models import TipoUsuario
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import ClienteForm
-from .models import Cliente
+from .forms import ClienteForm, ContactForm
+from .models import Cliente, Contacto
 from agenda.models import Cita
+
 
 def base(request):
     return render(request, "base.html")
@@ -66,22 +67,39 @@ def contacto(request):
             tipo_usuario = TipoUsuario.objects.get(usuario=request.user)
         except TipoUsuario.DoesNotExist:
             pass
-    
-    # Pasar el tipo de usuario al contexto de la plantilla
+
+    if request.method == 'POST':
+        print("Método POST recibido")
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Imprimir los datos ingresados en el formulario
+            print("Formulario válido")
+            print("Nombre:", form.cleaned_data['nombre'])
+            print("Correo electrónico:", form.cleaned_data['email'])
+            print("Teléfono:", form.cleaned_data['telefono'])
+            print("Mensaje:", form.cleaned_data['mensaje'])
+
+            form.save()  # Guardar directamente en la base de datos
+            return redirect('index')  # Redirigir a una página de éxito
+        else:
+            print("Formulario no válido")
+            print("Errores del formulario:", form.errors)
+    else:
+        print("Método GET recibido")
+        form = ContactForm()
+
+    # Pasar el tipo de usuario y el formulario al contexto de la plantilla
     context = {
-        'tipo_usuario': tipo_usuario.tipo if tipo_usuario else None
+        'tipo_usuario': tipo_usuario.tipo if tipo_usuario else None,
+        'form': form
     }
     return render(request, "contacto.html", context)
 
 
+
+
 @login_required
 def editar_cliente(request):
-    # Obtener el TipoUsuario asociado al usuario actual
-    try:
-        tipo_usuario = TipoUsuario.objects.get(usuario=request.user)
-    except TipoUsuario.DoesNotExist:
-        tipo_usuario = None
-    
     try:
         cliente = get_object_or_404(Cliente, usuario=request.user)
     except Cliente.DoesNotExist:
@@ -91,17 +109,24 @@ def editar_cliente(request):
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
-            return render(request, 'editar_cliente.html', {'form': form, 'success': True})
+            return redirect('editar_cliente')  # Redirigir a la misma página para mostrar éxito
     else:
         form = ClienteForm(instance=cliente)
 
-    # Pasar el tipo de usuario al contexto de la plantilla
+    # Obtener el TipoUsuario asociado al usuario actual
+    try:
+        tipo_usuario = TipoUsuario.objects.get(usuario=request.user)
+    except TipoUsuario.DoesNotExist:
+        tipo_usuario = None
+
     context = {
+        'form': form,
         'tipo_usuario': tipo_usuario.tipo if tipo_usuario else None,
-        'form': form
     }
 
     return render(request, 'editar_cliente.html', context)
+
+
 
 @login_required
 def citas(request):
@@ -123,3 +148,4 @@ def citas(request):
     }
     
     return render(request, 'citas.html', context)
+

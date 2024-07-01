@@ -1,6 +1,6 @@
 @echo off
 REM Activar el entorno virtual
-call .\venv\Scripts\activate
+call .\env\Scripts\activate
 
 REM Realizar makemigrations
 python manage.py makemigrations

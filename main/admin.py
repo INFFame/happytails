@@ -50,3 +50,8 @@ class TipoPacienteAdmin(admin.ModelAdmin):
 @admin.register(Tratamiento)
 class TratamientoAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Contacto)
+class ContactAdmin(admin.ModelAdmin):
+    pass

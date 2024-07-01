@@ -1,5 +1,5 @@
 from django.db import models
-from main.models import Cliente, TipoPaciente
+from main.models import Cliente, TipoPaciente, Tratamiento
 
 class Paciente(models.Model):
     nombre_paciente = models.CharField(max_length=50)
@@ -9,6 +9,7 @@ class Paciente(models.Model):
     observacion_paciente = models.TextField()
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='pacientes')
     tipo_paciente = models.ForeignKey(TipoPaciente, on_delete=models.CASCADE, related_name='pacientes')
+    tipo_tratamiento = models.ForeignKey(Tratamiento, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre_paciente

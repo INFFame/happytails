@@ -8,19 +8,40 @@
             <div class="container p-5">
                 <h2 class="text-center py-5 text-white">Mis Mascotas</h2>
                 <div class="mb-3 text-end">
-                    <a href="{% url 'crear_paciente' %}" class="btn btn-primary">Crear Mascota</a>
+                    <a href="{% url 'crear_paciente' %}" class="btn btn-primary">+ Agregar Mascota</a>
                 </div>
                 <table class="table table-light table-sm table-bordered-dark table-hover text-center">
                     <thead>
                         <tr>
-                            <th class="tabla-esquina-1">Nombre Mascota</th>
-                            <th class="tabla-esquina-2">Opciones</th>
+                            <th class="tabla-esquina-1"><br></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th class="tabla-esquina-2"><br></th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Sexo</th>
+                            <th>Tipo</th>
+                            <th>Color</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>Tratamiento Pasado</th>
+                            <th>Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for paciente in pacientes %}
                         <tr>
                             <td class="text-capitalize">{{ paciente.nombre_paciente }}</td>
+                            <td class="text-capitalize">{{ paciente.get_sexo_paciente_display }}</td>
+                            <td class="text-capitalize">{{ paciente.tipo_paciente }}</td>
+                            <td class="text-capitalize">{{ paciente.color_paciente }}</td>
+                            <td class="text-capitalize">{{ paciente.fecha_nacimiento_paciente|date:"d/m/Y" }}</td>
+                            <td class="text-capitalize">{{ paciente.tipo_tratamiento }}</td>
                             <td>
                                 <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-secondary mx-1">Editar</a>
                                 <form method="post" action="{% url 'eliminar_paciente' paciente.id %}" style="display:inline;">
@@ -31,13 +52,18 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="2">No tienes pacientes registrados.</td>
+                            <td colspan="2">No tienes mascotas registradas.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                     <thead>
                         <tr>
                             <th class="tabla-esquina-3"><br></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                             <th class="tabla-esquina-4"><br></th>
                         </tr>
                     </thead>

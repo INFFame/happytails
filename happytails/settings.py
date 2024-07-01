@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'happytails.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'happytails',
         'USER': 'postgres',

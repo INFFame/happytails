@@ -28,13 +28,13 @@
                             <a class="nav-link" href="{% url 'index' %}">Inicio</a>
                         </li>
                         <li class="nav-item mx-auto">
+                            <a class="nav-link" href="{% url 'servicios' %}">Servicios</a>
+                        </li>
+                        <li class="nav-item mx-auto">
                             <a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
                         </li>
                         <li class="nav-item mx-auto">
                             <a class="nav-link" href="{% url 'nosotros' %}">Nosotros</a>
-                        </li>
-                        <li class="nav-item mx-auto">
-                            <a class="nav-link" href="{% url 'servicios' %}">Servicios</a>
                         </li>
                         <li class="nav-item mx-auto">
                             <a class="nav-link" href="{% url 'agendar' %}">¡Agenda tu hora!</a>
@@ -45,7 +45,6 @@
                         <div class="texto__usuario">
                             <p class="me-0">¡Bienvenido, <span class="capitalize">{{ user.username }}!</span></p>
                         </div>
-
                         <a class="border-0" id="avatar-button" data-bs-toggle="popover" data-bs-html="true">
                             <img src="{% static '/img/avatar.png'%}" class="avatar">
                         </a>           
@@ -57,9 +56,7 @@
             </div>
         </nav>
     </header>
-
     {% block contenido %} {% endblock %}
-
     <div class="container-fluid container__footer vw-100">
         <div class="row pt-5 pb-3 footer">
             <div class="col-12 col-md-6 col-lg-3 mb-5 mb-lg-0">
@@ -79,14 +76,12 @@
                     <a href=""><i class="bi bi-twitter-x"></i></a>
                 </div>
             </div>
-
             <div class="col-12 col-md-6 col-lg-3 mb-5 mb-lg-0">
                 <p class="h3 mb-3 footer__titulo">Contacto</p>
                 <p class="mb-3 mx-0"><i class="bi bi-geo-alt-fill"></i>Cam. Los Cazadores 4672, Lo Barnechea</p>
                 <p class="mb-3"><i class="bi bi-telephone-inbound-fill"></i>600 600 4250</p>
                 <p class="mb-3"><i class="bi bi-envelope-at-fill"></i>contacto@happytails.cl</p>
             </div>
-
             <div class="col-12 col-md-6 col-lg-3 mb-5 mb-lg-0">
                 <p class="h3 mb-3 footer__titulo">Enlaces</p>
                 <div class="mb-3">
@@ -102,51 +97,47 @@
                     <a href="{% url 'nosotros' %}" class="footer__enlace">Sobre nosotros</a>
                 </div>
             </div>
-
             <div class="col-12 col-md-6 col-lg-3 mb-5 mb-lg-0">
                 <p class="h3 mb-3 footer__titulo">Información</p>
                 <p class="mb-3">Terminos y condiciones</p>
                 <p class="mb-3">Política de privacidad</p>
             </div>
         </div>
-
         <div class="pb-3 text-center">
             <hr class="footer__hr" />
             <span>&copy; 2024 Derechos reservados | HappyTails</span>
         </div>
     </div>
-
     <!-- Popover-->
     <div id="popover-content" class="d-none">
-      <div class="card card-popover">
-          <div class="card-header d-flex align-items-center">
-              <img src="{% static 'img/avatar.png' %}" class="avatar">
-              <div class="user-info ms-2">
-                  <strong class="text-capitalize">{{ user.username }}</strong>
-                  <small>{{ user.email }}</small>
-              </div>
-          </div>
-          <div class="card-body">
+        <div class="card card-popover">
+            <div class="card-header d-flex align-items-center">
+                <img src="{% static 'img/avatar.png' %}" class="avatar">
+                <div class="user-info ms-2">
+                    <strong class="text-capitalize">{{ user.username }}</strong>
+                    <small>{{ user.email }}</small>
+                </div>
+            </div>
+            <div class="card-body">
             {% if request.user.is_authenticated %}
-              <hr class="m-0">
-              {% if tipo_usuario == 'cliente' %}
-              <!-- Contenido específico para clientes -->
-              <a href="{% url 'citas' %}" class="btn btn-link text-start text-decoration-none text-dark">Mis citas</a>
-              <hr class="m-0">
-              <a href="{% url 'editar_cliente' %}" class="btn btn-link text-start text-decoration-none text-dark">Editar datos</a>
-              {% elif tipo_usuario == 'recepcionista' %}
-              <!-- Contenido específico para recepcionistas -->
-              <a href="{% url 'lista_citas' %}" class="btn btn-link text-start text-decoration-none text-dark">Gestión de citas</a>
-              <hr class="m-0">
-              <!-- Otras opciones para recepcionistas -->
-              {% endif %}
-              <a href="{% url 'logout' %}" class="btn btn-link text-start text-decoration-none text-dark">Cerrar sesión</a>
+            {% if tipo_usuario == 'cliente' %}
+            <!-- Contenido específico para clientes -->
+            <a href="{% url 'citas' %}" class="btn btn-link text-start text-decoration-none text-dark">Mis citas</a>
+            <hr class="m-0">
+            <a href="{% url 'editar_cliente' %}" class="btn btn-link text-start text-decoration-none text-dark">Editar datos</a>
+            <hr class="m-0">
+            <a href="{% url 'ver_paciente' %}" class="btn btn-link text-start text-decoration-none text-dark">Mis mascotas</a>
+            {% elif tipo_usuario == 'recepcionista' %}
+            <!-- Contenido específico para recepcionistas -->
+            <a href="{% url 'lista_citas' %}" class="btn btn-link text-start text-decoration-none text-dark">Gestión de citas</a>
+            <!-- Otras opciones para recepcionistas -->
+            {% endif %}
+            <hr class="m-0">
+            <a href="{% url 'logout' %}" class="btn btn-link text-start text-decoration-none text-dark">Cerrar sesión</a>
             {% endif %}  
+            </div>
         </div>
-      </div>
     </div>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
