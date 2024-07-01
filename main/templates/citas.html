@@ -13,6 +13,8 @@
                             <th class="tabla-esquina-1"><br></th>
                             <th><br></th>
                             <th><br></th>
+                            <th><br></th>
+                            <th><br></th>
                             <th class="tabla-esquina-2"><br></th>
                         </tr>
                     </thead>
@@ -20,6 +22,8 @@
                         <tr>
                             <th>Nombre Usuario</th>
                             <th>Veterinario</th>
+                            <th>Especialidad</th>
+                            <th>Sucursal</th>
                             <th>Fecha cita</th>
                             <th>Horario cita</th>
                         </tr>
@@ -27,17 +31,20 @@
                     <tbody>
                         {% for cita in citas %}
                         <tr>
-                            <td class = "text-capitalize">{{ cita.usuario.first_name }} {{ cita.usuario.last_name }}
-                            </td>
-                            <td> {{ cita.veterinario }}</td>
-                            <td> {{ cita.fecha_cita|date:"d/m/Y" }} </td>
-                            <td> {{ cita.get_horario_display }} </td>
+                            <td class="text-capitalize">{{ cita.usuario.first_name }} {{ cita.usuario.last_name }}</td>
+                            <td>{{ cita.veterinario }}</td>
+                            <td>{{ cita.veterinario.especialidad.nombre_especialidad }}</td>
+                            <td>{{ cita.sucursal.nombre_clinica }} - {{ cita.sucursal.direccion_clinica }}</td>
+                            <td>{{ cita.fecha_cita|date:"d/m/Y" }}</td>
+                            <td>{{ cita.get_horario_display }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                     <thead>
                         <tr>
                             <th class="tabla-esquina-3"><br></th>
+                            <th><br></th>
+                            <th><br></th>
                             <th><br></th>
                             <th><br></th>
                             <th class="tabla-esquina-4"><br></th>
@@ -48,4 +55,4 @@
         </div>
     </main>
 </body>
-{% endblock %}                                                                                                                                        
+{% endblock %}

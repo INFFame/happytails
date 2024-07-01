@@ -67,7 +67,15 @@ class CitaListView(ClienteCreateMixin, TestMixinIsAdmin, ListView):
             except TipoUsuario.DoesNotExist:
                 pass
         context['tipo_usuario'] = tipo_usuario.tipo if tipo_usuario else None
-        return context  
+
+        # Agregar especialidad del veterinario y sucursal
+        citas = self.get_queryset()
+        for cita in citas:
+            cita.especialidad = cita.veterinario.especialidad
+            cita.sucursal = cita.sucursal
+
+        context['citas'] = citas
+        return context   
     
 
 class CitaDeleteView(TestMixinIsAdmin, ClienteCreateMixin, DeleteView):
