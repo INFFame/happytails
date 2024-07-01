@@ -69,11 +69,14 @@
                     </p>
                 </div>
                 <div class="mb-3">
-                    <a href=""><i class="bi bi-facebook"></i></a>
-                    <a href=""><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.facebook.com/people/Happy-Tails/pfbid0eCW5SSXshVDC29eVvfrAjFgVmySc5EwLf7VMML3914tXXHeR2ggbVhhkqNP4uAZjl/"
+                        target="_blank"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/happytails_clinvet/"
+                        target="_blank"><i class="bi bi-instagram"></i></a>
                     <a href=""><i class="bi bi-tiktok"></i></a>
                     <a href=""><i class="bi bi-whatsapp"></i></a>
-                    <a href=""><i class="bi bi-twitter-x"></i></a>
+                    <a href="https://x.com/vet_happytails"
+                        target="_blank"><i class="bi bi-twitter-x"></i></a>
                 </div>
             </div>
             <div class="col-12 col-md-6 col-lg-3 mb-5 mb-lg-0">
@@ -132,8 +135,10 @@
             <a href="{% url 'lista_citas' %}" class="btn btn-link text-start text-decoration-none text-dark">Gestión de citas</a>
             <!-- Otras opciones para recepcionistas -->
             {% endif %}
-            <hr class="m-0">
-            <a href="{% url 'logout' %}" class="btn btn-link text-start text-decoration-none text-dark">Cerrar sesión</a>
+            <div>
+                <hr class="m-0">
+                <a href="{% url 'logout' %}" class="btn btn-link text-start text-decoration-none btn-logout d-block mt-1">Cerrar sesión</a>
+            </div>
             {% endif %}  
             </div>
         </div>

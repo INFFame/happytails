@@ -20,7 +20,7 @@
                     </thead>
                     <thead>
                         <tr>
-                            <th>Nombre Usuario</th>
+                            <th>Nombre Cliente</th>
                             <th>Veterinario</th>
                             <th>Especialidad</th>
                             <th>Sucursal</th>
@@ -37,6 +37,14 @@
                             <td>{{ cita.sucursal.nombre_clinica }} - {{ cita.sucursal.direccion_clinica }}</td>
                             <td>{{ cita.fecha_cita|date:"d/m/Y" }}</td>
                             <td>{{ cita.get_horario_display }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">No tienes citas registradas.</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         {% endfor %}
                     </tbody>
