@@ -88,6 +88,7 @@ class Veterinario(models.Model):
 
     def __str__(self):
         return f"{self.nombre_veterinario} {self.apellido_veterinario}"
+ 
 
 class Recepcionista(models.Model):
     numrut_recepcionista = models.CharField(max_length=12, primary_key=True)

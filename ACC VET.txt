@@ -15,3 +15,7 @@ Password: Rosa2024
 #User Recepcionista
 Nombre de usuario: RECAlejandra
 Password: Recep2024
+
+User cliente:
+Nombre de usuario: atrivino
+Password: dani123456
